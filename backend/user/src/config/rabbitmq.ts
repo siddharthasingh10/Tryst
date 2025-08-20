@@ -2,10 +2,9 @@ import amqp from "amqplib"
 let channel:amqp.Channel;
 
 export const connectRabbitMQ = async () => {
-     console.log("RabbitMQ creds: 💘💘💘💘💘💘💘", process.env.RABBITMQ_USER, process.env.RABBITMQ_PASSWORD);
     try {
        
-
+        // Create a connection to RabbitMQ
          const connection = await amqp.connect({   
             protocol: 'amqp',
             hostname:  process.env.RABBITMQ_HOST ,
@@ -14,7 +13,7 @@ export const connectRabbitMQ = async () => {
             port: 5672, 
             vhost: '/',
          });
-
+        // Create a channel
         channel = await connection.createChannel();
         console.log("Connected to RabbitMQ successfully");
 
@@ -28,7 +27,9 @@ export const publishToQueue=async (queueName: string, message: any) => {
         console.error("Channel is not initialized");
         return;
     }
+    // Ensure the queue exists
     await channel.assertQueue(queueName, { durable: true });
+    // Send the message to the queue
     channel.sendToQueue(queueName, Buffer.from(JSON.stringify(message)), {
         persistent: true
     }); 
