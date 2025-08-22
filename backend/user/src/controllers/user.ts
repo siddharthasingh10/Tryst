@@ -89,3 +89,10 @@ export const verifyUser = TryCatch(async (req, res) => {
     token,
   });
 });
+
+
+export const myProfile = TryCatch(async (req: AuthenticatedRequest, res) => {
+  const user = req.user;
+
+  res.json(user);
+});
