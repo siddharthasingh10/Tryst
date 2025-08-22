@@ -14,7 +14,7 @@ app.use(express.json());
 connectDB();
 connectRabbitMQ();
 
-app.use('api/v1',userRoutes);
+app.use('/api/v1',userRoutes);
 
 //REDIS 
 export const redisClient = createClient({
